@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css">
+    <script src="https://kit.fontawesome.com/0c2f246524.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins&family=Ruthie&display=swap" rel="stylesheet">
+    <title>City App</title>
+</head>
+<!--                                          BODY                                          -->
+<body>
+
+    <div id="main-weather">
+        <div id="inp">
+            <input oninput="search()" type="search" placeholder="Enter a City name in USA">
+        </div>
+        <div id="content"></div>
+    </div>
+    
+</body>
+<!--                                         SCRIPT                                         -->
+<script>
+
+    var inp = document.querySelector("input")
+    var div1 = document.getElementById("content")
+
+    function search(){
+        fetch("https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json")
+        .then(res=>res.json())
+        .then(data=>mydata(data))
+        .catch(err=>console.log(err,"test error"))
+    }
+
+    function mydata(data){
+           var value=inp.value
+           console.log(value,"value");
+            var cities = data.filter((ele)=> {
+                div1.innerHTML=""
+                return   ele.city.toLowerCase().includes(value.toLowerCase())
+            });
+            console.log(cities,"test");
+            cities.map(element => {
+                var abc = document.createElement("div")
+                var reg=new RegExp(inp.value,"gi")
+            console.log(reg,"reg");
+
+                abc.innerHTML=`
+                    <div>   
+                        <h1><span>City Name</span> : ${element.city.replace(reg,`<span style="color:rgb(6, 179, 6)">${inp.value}</span>`)}</h1>
+                        <h2><span>Growth from 2000 to 2013</span> : ${element.growth_from_2000_to_2013}</h2>
+                        <h2><span>Latitude</span> : ${element.latitude}</h2>
+                        <h2><span>Longitude</span> : ${element.longitude}</h2>
+                        <h2><span>Population</span> : ${element.population}</h2>
+                        <h2><span>Rank</span> : ${element.rank}</h2>
+                        <h2><span>State</span> : ${element.state}</h2>
+                    </div>
+                    `
+                    div1.appendChild(abc)
+                    div1.appendChild(abc)
+                    if(inp.value==""){
+                        div1.innerHTML=""
+                    }
+            });
+       }
+
+</script>
+</html>
